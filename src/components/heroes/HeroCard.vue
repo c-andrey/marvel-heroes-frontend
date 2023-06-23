@@ -2,7 +2,15 @@
 import { HeroType } from './heroes.types';
 
 defineProps<{ data: HeroType }>();
-defineEmits(['vote']);
+
+const emit = defineEmits<{
+    'up-vote': [id: number]
+    'down-vote': [id: number]
+}>()
+
+const upVote = (id: number) => {
+    emit('up-vote', id);
+}
 
 </script>
 <template>
@@ -14,7 +22,7 @@ defineEmits(['vote']);
         </div>
 
         <div class="hero-card__actions">
-            <button class="hero-card__vote" data-test="button-up-vote" @click="$emit('vote', data.id)">Vote</button>
+            <button class="hero-card__vote" data-test="button-up-vote" @click="(upVote)">Vote</button>
         </div>
     </div>
 </template>

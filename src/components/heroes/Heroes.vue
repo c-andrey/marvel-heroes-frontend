@@ -9,7 +9,6 @@ const heroesList = ref<HeroesResponseType>();
 const heroName = ref('');
 const fetchItems = async () => {
     if (heroName.value) {
-        console.log(`http://localhost:8000/api/heroes?name=${heroName.value}`)
         const { data } = await axios.get<HeroesResponseType>(`http://localhost:8000/api/heroes?name=${heroName.value}`);
         heroesList.value = data
         return;
@@ -17,6 +16,11 @@ const fetchItems = async () => {
     const { data } = await axios.get<HeroesResponseType>('http://localhost:8000/api/heroes');
     heroesList.value = data
 }
+
+const vote = (action: string) => {
+    console.log(action)
+}
+
 
 onMounted(() => {
     fetchItems();
@@ -35,5 +39,6 @@ onMounted(() => {
         <input type="text" id="filter" data-test="input-filter" v-model="heroName" />
     </div>
 
-    <HeroCardComponent v-for="item in heroesList?.heroes.results" :key="item.id" data-test="hero" :data="item" />
+    <HeroCardComponent v-for="item in heroesList?.heroes.results" :key="item.id" :data="item" @up-vote="vote('up')"
+        @down-vote="vote('down')" data-test="hero" />
 </template>
