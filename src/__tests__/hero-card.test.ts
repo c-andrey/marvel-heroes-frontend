@@ -27,7 +27,13 @@ describe("HeroCard Component", () => {
     it("should up vote the hero", async () => {
         const button = wrapper.find('[data-test="button-up-vote"]');
         await button.trigger('click');
-        expect(wrapper.emitted()).toHaveProperty('up-vote');
+        expect(wrapper.emitted()).toHaveProperty('vote');
+    });
+
+    it("should down vote the hero", async () => {
+        const button = wrapper.find('[data-test="button-down-vote"]');
+        await button.trigger('click');
+        expect(wrapper.emitted()).toHaveProperty('vote');
     });
 }
 );
