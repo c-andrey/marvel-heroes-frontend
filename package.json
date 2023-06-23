@@ -14,7 +14,8 @@
         "eslint --fix"
       ]
     },
-    "test": "vitest --ui --config ./vitest.config.js"
+    "test": "vitest --ui --config ./vitest.config.js",
+    "test:coverage": "vitest --ui --config ./vitest.config.js --coverage"
   },
   "dependencies": {
     "axios": "^1.4.0",
@@ -24,6 +25,8 @@
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitest/coverage-c8": "^0.32.2",
+    "@vitest/coverage-istanbul": "^0.32.2",
+    "@vitest/coverage-v8": "^0.32.2",
     "@vitest/ui": "^0.32.2",
     "@vue/test-utils": "^2.4.0",
     "axios-mock-adapter": "^1.21.5",
