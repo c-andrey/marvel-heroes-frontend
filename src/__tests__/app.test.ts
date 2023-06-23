@@ -8,4 +8,11 @@ describe('App component', () => {
         const wrapper = mount(AppVue);
         expect(wrapper.findComponent(AppVue).exists()).toBeTruthy();
     });
+
+    it('should render App component with heroes component', () => {
+        const wrapper = mount(AppVue);
+        expect(wrapper.findComponent({ name: 'Heroes' }).exists()).toBeTruthy();
+
+    });
+
 })
