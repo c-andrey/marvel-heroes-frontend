@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { HeroType } from './heroes.types';
 
-defineProps<{ data: HeroType }>();
+const props = defineProps<{ data: HeroType }>();
 
 const emit = defineEmits<{
-    'up-vote': [id: number]
-    'down-vote': [id: number]
+    'vote': [action: string, id: number]
 }>()
 
-const upVote = (id: number) => {
-    emit('up-vote', id);
+const vote = (action: string) => {
+    emit('vote', action, props.data.id);
 }
 
 </script>
@@ -22,7 +21,8 @@ const upVote = (id: number) => {
         </div>
 
         <div class="hero-card__actions">
-            <button class="hero-card__vote" data-test="button-up-vote" @click="(upVote)">Vote</button>
+            <button class="hero-card__vote" data-test="button-up-vote" @click="vote('up')">Up</button>
+            <button class="hero-card__vote" data-test="button-down-vote" @click="vote('down')">Down</button>
         </div>
     </div>
 </template>

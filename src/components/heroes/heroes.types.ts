@@ -85,3 +85,16 @@ export type HeroesListType = {
 export type HeroesResponseType = {
     [key: string]: HeroesListType
 }
+
+export type HeroVotedType = {
+    id: number
+    hero_id: number
+    votes: number
+    created_at: string
+    updated_at: string
+}
+
+export type VoteHeroResponse = {
+    voted: boolean
+    data: HeroVotedType
+}
