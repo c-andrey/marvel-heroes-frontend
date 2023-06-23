@@ -63,13 +63,13 @@ export type HeroType = {
     name: string
     votes: number
     description: string
-    thumbnail: HeroThumbnailType[]
-    resourceURI: string
-    comics: HeroComicsType[]
-    series: HeroSeriesType[]
-    stories: HeroStoriesType[]
-    events: HeroEventsType[]
-    urls: HeroUrlsType[]
+    thumbnail?: HeroThumbnailType[]
+    resourceURI?: string
+    comics?: HeroComicsType[]
+    series?: HeroSeriesType[]
+    stories?: HeroStoriesType[]
+    events?: HeroEventsType[]
+    urls?: HeroUrlsType[]
 };
 
 export type HeroesListType = {
