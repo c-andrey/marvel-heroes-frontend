@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { describe, expect, beforeEach, vi, it } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
-import Vue from 'vue';
 
 import Heroes from '../components/heroes/Heroes.vue';
 import HeroCardComponent from '@/components/heroes/HeroCard.vue';
