@@ -10,5 +10,8 @@ import { makeRemoteHeroes } from '@/factories/usecases/remote-heroes-factory'
     <HeroesVue :remote-heroes="makeRemoteHeroes()" />
   </div>
 </template>
-
-<style scoped></style>
+<style>
+.container {
+  height: 100%;
+}
+</style>

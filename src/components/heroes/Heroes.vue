@@ -16,6 +16,7 @@ const perPage = ref(10);
 const loading = ref(false);
 
 const fetchItems = async () => {
+
     loading.value = true;
     const response = await props.remoteHeroes.loadHeroesList({ name: heroName.value, page: page.value, perPage: perPage.value });
 
@@ -40,17 +41,71 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="header">
-        <h1>Heroes</h1>
-        <p>Here you can vote for your favorite hero!</p>
-    </div>
+    <Card class="heroes-list__header">
+        <template #content>
+            <h1>Marvel Heroes</h1>
+            <p>Aqui você pode escolher seu herói favorito!</p>
+            <div class="heroes-list__filter">
+                <form @submit.prevent="fetchItems" class="heroes-list__form">
 
-    <div class="heroes-list__filter">
-        <label for="filter">Filter by name:</label>
-        <input type="text" id="filter" data-test="input-filter" v-model="heroName" />
-        <button data-test="button-filter" @click="fetchItems">Filter</button>
-    </div>
+                    <div class="p-inputgroup flex-1">
+                        <InputText type="text" id="filter" data-test="input-filter" placeholder="Digite o nome..."
+                            v-model="heroName" :loading="loading" />
+                        <Button icon="pi pi-search" data-test="button-filter" @click="fetchItems" type="submit"
+                            :loading="loading" label="Pesquisar" />
+                    </div>
 
-    <HeroCardComponent v-for="item in heroesList?.heroes.results" :key="item.id" :data="item" @vote="vote"
-        data-test="hero" />
+                </form>
+            </div>
+        </template>
+    </Card>
+
+
+    <ScrollPanel class="heroes-list__overflow custombar1">
+        <Card v-for="item in heroesList?.heroes.results" data-test="hero">
+            <template #content>
+                <HeroCardComponent :key="item.id" :data="item" @vote="vote" />
+            </template>
+        </Card>
+
+    </ScrollPanel>
 </template>
+
+<style>
+.heroes-list__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.heroes-list__filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.heroes-list__form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 700px;
+}
+
+.heroes-list__overflow {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 70%;
+}
+
+.p-card {
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+</style>
