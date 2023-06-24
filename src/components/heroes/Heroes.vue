@@ -26,6 +26,11 @@ const handlePerPageChange = async (value: number) => {
     perPage.value = value;
 }
 
+const handleSearch = async () => {
+    page.value = 1;
+    await fetchItems();
+}
+
 const fetchItems = async () => {
     loading.value = true;
 
@@ -70,7 +75,7 @@ onMounted(async () => {
                         <div class="p-inputgroup flex-1">
                             <input class="p-inputtext p-component" type="text" id="filter" data-test="input-filter"
                                 placeholder="Digite o nome..." v-model="heroName" :loading="loading" />
-                            <Button icon="pi pi-search" data-test="button-filter" @click="fetchItems" type="submit"
+                            <Button icon="pi pi-search" data-test="button-filter" @click="handleSearch" type="submit"
                                 :loading="loading" label="Pesquisar" />
                         </div>
 
