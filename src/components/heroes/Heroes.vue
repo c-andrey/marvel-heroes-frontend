@@ -82,7 +82,7 @@ onMounted(async () => {
 
 
         <Transition>
-            <div class="heroes-list__overflow" ref="overflow">
+            <div class="heroes-list__overflow" ref="overflow" v-if="!loading">
 
                 <div v-for="item in heroesList?.heroes.results" data-test="hero" :data-test-id="item.id" class="p-card">
                     <div class="p-content">
@@ -90,6 +90,15 @@ onMounted(async () => {
                             #{{ item.id }}
                         </div>
                         <HeroCardComponent :key="item.id" :data="item" @vote="vote" />
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="heroes-list__loading" v-else>
+                <div class="p-card">
+                    <div class="p-content">
+                        Carregando...
                     </div>
                 </div>
             </div>
@@ -175,6 +184,13 @@ onMounted(async () => {
 
 .heroes-list__overflow .p-card .p-card-content {
     padding: 0;
+}
+
+.heroes-list__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .p-card {
