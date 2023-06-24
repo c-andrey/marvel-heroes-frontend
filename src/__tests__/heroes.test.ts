@@ -1,9 +1,11 @@
 import axios from 'axios';
-import { describe, test, expect, beforeEach, vi, it } from 'vitest';
-import { mount, VueWrapper } from '@vue/test-utils';
+import { describe, expect, beforeEach, vi, it } from 'vitest';
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
+import Vue from 'vue';
 
 import Heroes from '../components/heroes/Heroes.vue';
 import HeroCardComponent from '@/components/heroes/HeroCard.vue';
+import { makeRemoteHeroes } from '@/factories/usecases/remote-heroes-factory';
 
 const mockResolvedValueData = {
     "heroes": {
@@ -33,43 +35,38 @@ const mockResolvedValueData = {
 vi.mock('axios', () => {
     return {
         default: {
-            get: vi.fn(() => Promise.resolve({ status: 200, data: mockResolvedValueData })),
-            post: vi.fn(() => Promise.resolve({
-                status: 200, data: {
-                    "voted": true,
-                    "data": {
-                        "id": 24,
-                        "hero_id": 1011334,
-                        "votes": 4,
-                        "created_at": null,
-                        "updated_at": "2023-06-23T16:34:32.000000Z"
-                    }
-                }
-            }))
+            request: vi.fn(() => Promise.resolve({ status: 200, data: mockResolvedValueData }))
         }
     }
 })
-
 
 
 describe('HeroesList', () => {
 
     let wrapper: VueWrapper;
 
-    beforeEach(() => {
-        wrapper = mount(Heroes);
+    beforeEach(async () => {
+        wrapper = await mount(Heroes, {
+            props: {
+                remoteHeroes: makeRemoteHeroes(),
+            },
+        });
+
+        wrapper.vm.$nextTick()
     });
 
     it('should render heroes', () => {
         expect(wrapper.text()).toContain('Here you can vote for your favorite hero')
     })
 
-    it('should fetch heroes', () => {
+    it('should fetch heroes', async () => {
+        await flushPromises()
         expect(wrapper.findAll('[data-test="hero"]').length).toEqual(1);
     });
 
-    it('should show heroes list with component HeroCardComponent', () => {
-        expect(wrapper.findComponent(HeroCardComponent).exists()).toBeTruthy();
+    it('should show heroes list with component HeroCardComponent', async () => {
+        await flushPromises()
+        expect(wrapper.getComponent(HeroCardComponent)).toBeTruthy();
     });
 
     it('should filter heroes by name', async () => {
@@ -78,7 +75,17 @@ describe('HeroesList', () => {
         const button = wrapper.find('[data-test="button-filter"]');
         await button.trigger('click');
 
-        expect(axios.get).toHaveBeenCalledWith('http://localhost:8000/api/heroes?page=1&perPage=5&name=3-D Man');
+        expect(axios.request).toHaveBeenCalledWith({
+            data: undefined,
+            headers: undefined,
+            method: "get",
+            params: {
+                name: "3-D Man",
+                page: 1,
+                perPage: 10
+            },
+            url: "http://localhost:8000/api/heroes"
+        });
     });
 
 });

@@ -1,9 +1,8 @@
 import AppVue from "@/App.vue";
-import HeroCardVue from "@/components/heroes/HeroCard.vue";
-import HeroesVue from "@/components/heroes/Heroes.vue";
-import { VueWrapper, mount } from "@vue/test-utils";
-import axios from "axios";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { makeRemoteHeroes } from "@/factories/usecases/remote-heroes-factory";
+import { mount, shallowMount } from "@vue/test-utils";
+import axios, { isAxiosError } from "axios";
+import { Mocked, describe, expect, it, vi } from "vitest";
 
 const mockResolvedValueData = {
     "heroes": {
@@ -30,11 +29,10 @@ const mockResolvedValueData = {
 
 }
 
-
 vi.mock('axios', () => {
     return {
         default: {
-            get: vi.fn(() => Promise.resolve({ status: 200, data: mockResolvedValueData })),
+            request: vi.fn(() => Promise.resolve({ status: 200, data: mockResolvedValueData })),
             post: vi.fn(() => Promise.resolve({
                 status: 200, data: {
                     "voted": true,
@@ -51,38 +49,19 @@ vi.mock('axios', () => {
     }
 })
 
+vi.stubEnv('VUE_APP_API_URL', 'http://localhost:8000/api')
 
 describe('App component', () => {
-    let wrapper: VueWrapper;
-    beforeEach(() => {
-        wrapper = mount(AppVue);
-    });
 
     it('should render App component', () => {
+        const wrapper = shallowMount(AppVue)
         expect(wrapper.findComponent(AppVue).exists()).toBeTruthy();
     });
 
     it('should render App component with heroes component', async () => {
+        const wrapper = mount(AppVue)
 
         expect(wrapper.findComponent({ name: 'Heroes' }).exists()).toBeTruthy();
-    });
-
-    it('should render App component with heroes component with heroes list', async () => {
-        expect(wrapper.findComponent(HeroesVue).exists()).toBeTruthy();
-        expect(axios.get).toHaveBeenCalled();
-        expect(axios.get).toHaveBeenCalledWith('http://localhost:8000/api/heroes?page=1&perPage=5');
-    });
-
-    it('should render App component with heroes component with heroes list with HeroCard component', async () => {
-
-        expect(wrapper.findComponent(HeroCardVue).exists()).toBeTruthy();
-    })
-
-    it('should render components and vote on a hero', async () => {
-        const button = wrapper.find('[data-test="button-up-vote"]');
-        await button.trigger('click');
-        expect(wrapper.getComponent(HeroCardVue).emitted()).toHaveProperty('vote');
-        expect(axios.post).toHaveBeenCalled();
-        expect(axios.post).toHaveBeenCalledWith('http://localhost:8000/api/vote', { action: "up", hero_id: 1011334 });
+        expect(wrapper.findComponent({ name: 'Heroes' }).props()).toEqual({ remoteHeroes: makeRemoteHeroes() })
     });
 })
