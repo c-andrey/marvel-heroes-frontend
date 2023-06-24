@@ -1,33 +1,40 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { HeroesResponseType, VoteHeroResponse } from './heroes.types';
-import axios from 'axios';
 import HeroCardComponent from './HeroCard.vue';
+import { RemoteHeroesInterface } from "@/interfaces/heroes/remote-heroes.types";
+import { HeroesResponseType } from '@/interfaces/heroes/heroes.types';
 
+const props = defineProps<{
+    remoteHeroes: RemoteHeroesInterface;
+}>()
 
 const heroesList = ref<HeroesResponseType>();
 const heroName = ref('');
+const page = ref(1);
+const perPage = ref(10);
+
+const loading = ref(false);
+
 const fetchItems = async () => {
-    if (heroName.value) {
-        const { data } = await axios.get<HeroesResponseType>(`http://localhost:8000/api/heroes?page=1&perPage=5&name=${heroName.value}`);
-        heroesList.value = data
-        return;
-    }
-    const { data } = await axios.get<HeroesResponseType>('http://localhost:8000/api/heroes?page=1&perPage=5');
-    heroesList.value = data
+    loading.value = true;
+    const response = await props.remoteHeroes.loadHeroesList({ name: heroName.value, page: page.value, perPage: perPage.value });
+
+    heroesList.value = response;
+    loading.value = false;
+
 }
 
-const vote = async (action: string, id: number) => {
-    const { data } = await axios.post<VoteHeroResponse>(`http://localhost:8000/api/vote`, { action, hero_id: id });
+const vote = async (action: string, hero_id: number) => {
+    const response = await props.remoteHeroes.voteHero({ action, hero_id });
 
-    if (data.voted) {
+    if (response.voted) {
         fetchItems();
     }
 }
 
 
-onMounted(() => {
-    fetchItems();
+onMounted(async () => {
+    await fetchItems();
 });
 
 </script>

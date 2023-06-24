@@ -86,6 +86,12 @@ export type HeroesResponseType = {
     [key: string]: HeroesListType
 }
 
+export type HeroesRequestType = {
+    name?: string
+    page?: number
+    perPage?: number
+}
+
 export type HeroVotedType = {
     id: number
     hero_id: number
@@ -94,7 +100,12 @@ export type HeroVotedType = {
     updated_at: string
 }
 
-export type VoteHeroResponse = {
+export type VoteHeroResponseType = {
     voted: boolean
     data: HeroVotedType
+}
+
+export type VoteHeroRequestType = {
+    hero_id: number
+    action: string
 }
