@@ -82,7 +82,21 @@ onMounted(async () => {
 
 
         <Transition mode="out-in">
-            <div class="heroes-list__overflow" ref="overflow" v-if="!loading">
+            <div class="heroes-list__loading" v-if="loading">
+                <div class="p-card">
+                    <div class="p-content">
+                        Carregando...
+                    </div>
+                </div>
+            </div>
+            <div class="heroes-list__loading" v-else-if="!loading && heroesList?.heroes.total === 0">
+                <div class="p-card">
+                    <div class="p-content">
+                        Nenhum registro encontrado com este nome.
+                    </div>
+                </div>
+            </div>
+            <div class="heroes-list__overflow" ref="overflow" v-else>
 
                 <div v-for="item in heroesList?.heroes.results" data-test="hero" :data-test-id="item.id" class="p-card">
                     <div class="p-content">
@@ -94,13 +108,6 @@ onMounted(async () => {
                 </div>
 
 
-            </div>
-            <div class="heroes-list__loading" v-else>
-                <div class="p-card">
-                    <div class="p-content">
-                        Carregando...
-                    </div>
-                </div>
             </div>
         </Transition>
 

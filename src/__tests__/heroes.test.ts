@@ -4,9 +4,6 @@ import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 
 import Heroes from '../components/heroes/Heroes.vue';
 import { makeRemoteHeroes } from '@/factories/usecases/remote-heroes-factory';
-import { h } from 'vue';
-import HeroCardVue from '@/components/heroes/HeroCard.vue';
-import Card from 'primevue/card';
 
 const mockResolvedValueData = {
     "heroes": {
@@ -48,9 +45,6 @@ describe('HeroesList', () => {
 
     beforeEach(() => {
         wrapper = mount(Heroes, {
-            slots: {
-                default: h(Card)
-            },
             props: {
                 remoteHeroes: makeRemoteHeroes(),
             },

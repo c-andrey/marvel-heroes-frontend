@@ -1,8 +1,7 @@
 import AppVue from "@/App.vue";
 import { makeRemoteHeroes } from "@/factories/usecases/remote-heroes-factory";
 import { mount, shallowMount } from "@vue/test-utils";
-import axios, { isAxiosError } from "axios";
-import { Mocked, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 const mockResolvedValueData = {
     "heroes": {
