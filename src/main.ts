@@ -12,6 +12,7 @@ import InputText from 'primevue/inputtext';
 import DataView from 'primevue/dataview';
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
+import Paginator from 'primevue/paginator';
 
 const app = createApp(App);
 app.use(PrimeVue);
@@ -20,4 +21,5 @@ app.component('InputText', InputText);
 app.component('DataView', DataView)
 app.component('Card', Card)
 app.component('ScrollPanel', ScrollPanel)
+app.component('Paginator', Paginator)
 app.mount('#app')

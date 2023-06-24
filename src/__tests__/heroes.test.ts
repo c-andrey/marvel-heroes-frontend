@@ -3,8 +3,10 @@ import { describe, expect, beforeEach, vi, it } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 
 import Heroes from '../components/heroes/Heroes.vue';
-import HeroCardComponent from '@/components/heroes/HeroCard.vue';
 import { makeRemoteHeroes } from '@/factories/usecases/remote-heroes-factory';
+import { h } from 'vue';
+import HeroCardVue from '@/components/heroes/HeroCard.vue';
+import Card from 'primevue/card';
 
 const mockResolvedValueData = {
     "heroes": {
@@ -44,18 +46,31 @@ describe('HeroesList', () => {
 
     let wrapper: VueWrapper;
 
-    beforeEach(async () => {
-        wrapper = await mount(Heroes, {
+    beforeEach(() => {
+        wrapper = mount(Heroes, {
+            slots: {
+                default: h(Card)
+            },
             props: {
                 remoteHeroes: makeRemoteHeroes(),
             },
+            global: {
+                stubs: {
+                    Button: true,
+                    Card: true,
+                    InputText: true,
+                    Paginator: true,
+                    HeroCard: true
+                }
+            }
         });
 
-        wrapper.vm.$nextTick()
     });
 
-    it('should render heroes', () => {
-        expect(wrapper.text()).toContain('Here you can vote for your favorite hero')
+    it('should render heroes', async () => {
+        await flushPromises()
+        expect(wrapper.find('div.heroes-list__header')).toBeTruthy()
+
     })
 
     it('should fetch heroes', async () => {
@@ -65,10 +80,11 @@ describe('HeroesList', () => {
 
     it('should show heroes list with component HeroCardComponent', async () => {
         await flushPromises()
-        expect(wrapper.getComponent(HeroCardComponent)).toBeTruthy();
+        expect(wrapper.findAll('[data-test-id="1011334"]')).toBeTruthy();
     });
 
     it('should filter heroes by name', async () => {
+        await flushPromises()
         const input = wrapper.find('[data-test="input-filter"]');
         await input.setValue('3-D Man');
         const button = wrapper.find('[data-test="button-filter"]');

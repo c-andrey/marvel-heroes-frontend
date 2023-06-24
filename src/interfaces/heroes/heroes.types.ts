@@ -18,7 +18,6 @@ type HeroComicsType = {
 type HeroSeriesItemType = {
     resourceURI: string
     name: string
-    type: string
 }
 
 type HeroSeriesType = {

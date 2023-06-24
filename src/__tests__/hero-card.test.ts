@@ -63,6 +63,11 @@ describe("HeroCard Component", () => {
                     description: 'Description about the marvel hero 3-D Man',
                     votes: 1
                 }
+            },
+            global: {
+                stubs: {
+                    Button: true,
+                }
             }
         });
     });
@@ -77,6 +82,12 @@ describe("HeroCard Component", () => {
         const wrapper = mount(HeroesVue, {
             props: {
                 remoteHeroes: makeRemoteHeroes(),
+            },
+            global: {
+                stubs: {
+                    Paginator: true,
+                    Button: true,
+                }
             }
         })
 
@@ -107,6 +118,12 @@ describe("HeroCard Component", () => {
         const wrapper = mount(HeroesVue, {
             props: {
                 remoteHeroes: makeRemoteHeroes(),
+            },
+            global: {
+                stubs: {
+                    Paginator: true,
+                    Button: true,
+                }
             }
         })
 

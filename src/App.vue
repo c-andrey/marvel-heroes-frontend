@@ -6,12 +6,5 @@ import { makeRemoteHeroes } from '@/factories/usecases/remote-heroes-factory'
 </script>
 
 <template>
-  <div class="container">
-    <HeroesVue :remote-heroes="makeRemoteHeroes()" />
-  </div>
+  <HeroesVue :remote-heroes="makeRemoteHeroes()" />
 </template>
-<style>
-.container {
-  height: 100%;
-}
-</style>

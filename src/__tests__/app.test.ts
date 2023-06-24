@@ -59,7 +59,14 @@ describe('App component', () => {
     });
 
     it('should render App component with heroes component', async () => {
-        const wrapper = mount(AppVue)
+        const wrapper = mount(AppVue, {
+            global: {
+                stubs: {
+                    Button: true,
+                    Paginator: true
+                }
+            }
+        })
 
         expect(wrapper.findComponent({ name: 'Heroes' }).exists()).toBeTruthy();
         expect(wrapper.findComponent({ name: 'Heroes' }).props()).toEqual({ remoteHeroes: makeRemoteHeroes() })
