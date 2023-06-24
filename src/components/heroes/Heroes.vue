@@ -81,7 +81,7 @@ onMounted(async () => {
 
 
 
-        <Transition>
+        <Transition mode="out-in">
             <div class="heroes-list__overflow" ref="overflow" v-if="!loading">
 
                 <div v-for="item in heroesList?.heroes.results" data-test="hero" :data-test-id="item.id" class="p-card">
@@ -113,7 +113,7 @@ onMounted(async () => {
 <style scoped>
 .v-enter-active,
 .v-leave-active {
-    transition: opacity 0.5s ease;
+    transition: opacity 0.5s;
 }
 
 .v-enter-from,
