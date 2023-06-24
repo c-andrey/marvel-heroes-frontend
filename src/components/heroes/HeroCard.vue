@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { HeroType } from './heroes.types';
+import { HeroType } from '@/interfaces/heroes/heroes.types';
+
 
 const props = defineProps<{ data: HeroType }>();
 
@@ -17,7 +18,7 @@ const vote = (action: string) => {
         <div class="hero-card__info">
             <h3 class="hero-card__name">{{ data.name }}</h3>
             <p class="hero-card__description">{{ data.description }}</p>
-            <p class="hero-card__votes">Votes: {{ data.votes }}</p>
+            <p class="hero-card__votes" :data-test="data.votes">Votes: {{ data.votes }}</p>
         </div>
 
         <div class="hero-card__actions">
